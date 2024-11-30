@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-4">
-      <h2 class="letra1">Gestión de Sistema operativo</h2>
+      <h2 class="letra1">Gestión de Administradores</h2>
       <div class="text-left mb-4">
         <button class="btn btn-add btn-sm" @click="openForm">
           <i class="fa-solid fa-square-plus" style="margin-right: 10px;"></i> Agregar

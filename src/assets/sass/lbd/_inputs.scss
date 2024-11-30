@@ -12,26 +12,26 @@
 }
 
 .form-control {
-    background-color: $white-bg;
-    border: 1px solid $light-gray;
-    border-radius: $border-radius-base;
-    color: #565656;
+    background-color: #ffffff;
+    //border: 1px solid $light-gray;
+    border-radius: 15px;
+    color: #000000;
     @include input-size($padding-base-vertical, $padding-base-horizontal - 4, $height-base);
     @include box-shadow(none);
     
     &:focus{
-           background-color: $white-bg;
-           border: 1px solid $medium-dark-gray;
+           background-color: #ffffff;
+           border: 1px solid #000000;
            @include box-shadow(none);
            outline: 0 !important;    
-           color: #333333;   
+           color: #000000;   
     }
     
     .has-success &,
     .has-error &,
     .has-success &:focus,
     .has-error &:focus{
-        border-color: $light-gray;
+        border-color: #000000;
         @include box-shadow(none);
     }
     

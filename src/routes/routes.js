@@ -25,6 +25,7 @@ import DiscoDuro from '../pages/DiscoDuro.vue'
 import Ram from '../pages/Ram.vue'
 import Antivirus from '../pages/Antivirus.vue'
 import Office from '../pages/Office.vue'
+import Administradores from '../pages/Administradores.vue'
 const routes = [
   {
     path: '/',
@@ -126,6 +127,12 @@ const routes = [
         name: 'Office',
         component: Office,
       },
+      {
+        path: 'administradores',  // Cambié la ruta base a 'icons'
+        name: 'Administradores',
+        component: Administradores,
+      },
+
       {
         path: 'maps',
         name: 'Maps',

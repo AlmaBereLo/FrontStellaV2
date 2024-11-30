@@ -34,6 +34,7 @@
 .btn-info    { @include btn-styles($info-color, $info-states-color); }
 .btn-warning { @include btn-styles($warning-color, $warning-states-color); }
 .btn-danger  { @include btn-styles($danger-color, $danger-states-color); }
+.btn-add  { @include btn-styles(#0606f5, #000002); }
 .btn-neutral {
     @include btn-styles($white-color, $white-color);
 
@@ -86,7 +87,7 @@
    font-weight: $font-weight-normal;
 }
 .btn-sm{
-    @include btn-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $border-radius-small);
+    @include btn-size($padding-base-vertical, $padding-small-horizontal, $font-size-medium, $border-radius-large);
 }
 .btn-xs {
     @include btn-size($padding-xs-vertical, $padding-xs-horizontal, $font-size-small, $border-radius-small);

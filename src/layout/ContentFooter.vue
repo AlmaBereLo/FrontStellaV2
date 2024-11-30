@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer class="footer" style="margin-top: 340px;">
     <div class="container-fluid">
       <nav>
         <ul class="footer-menu">
@@ -20,4 +20,9 @@
 export default {}
 
 </script>
-<style></style>
+<style>
+.footer {
+  background-color: #17303f; /* Color de fondo */
+  
+}
+</style>

@@ -1,9 +1,9 @@
 <template>
   <div class="container mt-4">
-    <h2 class="typo-line mb-4">Gestión de Agencias</h2>
-    <div class="text-right mb-4">
-      <button class="btn btn-primary" @click="openForm">
-        <i class="fa-solid fa-plus"></i> Agregar
+    <h2 class="letra1">Gestión de Agencias</h2>
+    <div class="text-left mb-4">
+      <button class="btn btn-add btn-sm" @click="openForm">
+        <i class="fa-solid fa-square-plus" style="margin-right: 10px;"></i> Agregar
       </button>
     </div>
     <div v-if="showForm" class="modal-overlay" @click.self="cancelForm">
@@ -24,11 +24,12 @@
                 required
               />
             </div>
-            <div class="text-center">
+            <div class="text-center" >
               <button type="submit" class="btn btn-success mr-2">
-                <i class="fa-solid fa-check"></i> Guardar
+                <i class="fa-solid fa-check "></i> Guardar
               </button>
-              <button type="button" class="btn btn-secondary" @click="cancelForm">
+              <button type="button" class="btn btn-secondary" style="color: brown; border-color: brown;"
+               @click="cancelForm">
                 <i class="fa-solid fa-times"></i>Cancelar
               </button>
             </div>
@@ -40,9 +41,9 @@
       <table class="table table-striped table-hover text-center">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Acciones</th>
+            <th scope="col" style="width: 5%;">#</th>
+            <th scope="col" style="width: 60%;">Nombre</th>
+            <th scope="col" style="width: 35%;">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -50,12 +51,13 @@
             <td>{{ agencia.id_agencia }}</td>
             <td>{{ agencia.nombre_age }}</td>
             <td class="td-actions">
-              <button class="btn btn-warning btn-sm" @click="editAgency(agencia)">
-                <i class="fa-solid fa-pen-to-square"></i>
+              <button class="btn btn-warning btn-sm" style="width: 100px; margin-left: 30px; margin-right: 30px;" @click="editAgency(agencia)">
+                <i class="fa-solid fa-pen-to-square"style="margin-right: 10px;" ></i> Editar
               </button>
-              <button class="btn btn-danger btn-sm" @click="eliminarAgencia(agencia.id_agencia)">
-                <i class="fa-solid fa-trash"></i>
+              <button class="btn btn-danger btn-sm"  style="width: 100px;" @click="eliminarAgencia(agencia.id_agencia)">
+                <i class="fa-solid fa-trash" style="margin-right: 10px;"></i>Eliminar
               </button>
+              
             </td>
           </tr>
         </tbody>
@@ -152,3 +154,37 @@ export default {
   },
 };
 </script>
+
+<style>
+
+.letra1 {
+  font-family: 'letra1', sans-serif;
+  font-weight: bold;
+  color: #0A1A2F; /* Azul oscuro */
+  font-size: 30px; /* Ajusta el tamaño según sea necesario */
+  line-height: 1.2; /* Ajusta la altura de línea según sea necesario */
+  text-align: center; /* Centrar el texto */
+  margin: 20px 0; /* Espaciado superior e inferior */
+  text-transform: uppercase; /* Transformar el texto a mayúsculas */
+  letter-spacing: 1.5px; /* Espaciado entre letras */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra de texto suave */
+}
+.letr2 {
+  font-family: 'letra1', sans-serif;
+  font-weight: bold;
+  color: #0A1A2F; /* Azul oscuro */
+  font-size: 15px; /* Ajusta el tamaño según sea necesario */
+  line-height: 1.2; /* Ajusta la altura de línea según sea necesario */
+  text-align: center; /* Centrar el texto */
+  margin: 20px 0; /* Espaciado superior e inferior */
+  text-transform: uppercase; /* Transformar el texto a mayúsculas */
+  letter-spacing: 1.5px; /* Espaciado entre letras */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra de texto suave */
+}
+
+.linea {
+  border-top: 2px solid #c2d6d6; /* Línea azul clara */
+  margin: 10px 0; /* Espaciado superior e inferior */
+}
+</style>
+

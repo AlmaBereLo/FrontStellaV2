@@ -1,5 +1,5 @@
 .card{
-    border-radius: $border-radius-base;
+    border-radius: 40px;
     background-color: $white-color;
     margin-bottom: 30px;
 
@@ -43,7 +43,7 @@
         @include opacity(1);
     }
     .card-body{
-        padding: 15px 15px 10px 15px;
+        padding: 15px 15px 15px 15px;
     }
     .card-header{
         padding: 15px 15px 0;
@@ -126,7 +126,6 @@
         top: 0;
         width: 1px;
         background-color: $medium-gray;
-        card-body: "";
         position: absolute;
     }
 
@@ -161,7 +160,7 @@
         }
     }
 }
-
+//////////////////////////////////////////////
 
 
 .card-stats{
