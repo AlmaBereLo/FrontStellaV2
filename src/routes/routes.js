@@ -26,6 +26,9 @@ import Ram from '../pages/Ram.vue'
 import Antivirus from '../pages/Antivirus.vue'
 import Office from '../pages/Office.vue'
 import Login from '../Login.vue';
+
+import Administradores from '../pages/Administradores.vue'
+
 const routes = [
   {
     path: '/', // Ruta inicial
@@ -131,6 +134,12 @@ const routes = [
         name: 'Office',
         component: Office,
       },
+      {
+        path: 'administradores',  // Cambié la ruta base a 'icons'
+        name: 'Administradores',
+        component: Administradores,
+      },
+
       {
         path: 'maps',
         name: 'Maps',

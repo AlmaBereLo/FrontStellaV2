@@ -3,25 +3,27 @@
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
       <sidebar-link to="/admin/overview">
-        <i class="nc-icon nc-chart-pie-35"></i>
+        <i class="nc-icon nc-chart-pie-36"></i>
         <p>Panel</p>
-      </sidebar-link>
-      <sidebar-link to="/admin/user">
-        <i class="nc-icon nc-circle-09"></i>
-        <p>Administradores</p>
-      </sidebar-link>
-      <sidebar-link to="/admin/table-list">
-        <i class="nc-icon nc-settings-tool-66"></i>
-        <p>Mantenimientos</p>
-      </sidebar-link>
-      <sidebar-link to="/admin/typography">
-        <i class="nc-icon nc-paper-2"></i>
-        <p>Control general</p>
       </sidebar-link>
       <sidebar-link to="/admin/icons">
         <i class="nc-icon nc-bullet-list-67"></i>
         <p>Datos generales</p>
       </sidebar-link>
+      <sidebar-link to="/admin/typography">
+        <i class="nc-icon nc-tv-2"></i>
+        <p>Equipos</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/user">
+        <i class="nc-icon nc-single-copy-04"></i>
+        <p>Control General</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/table-list">
+        <i class="nc-icon nc-settings-90"></i>
+        <p>Mantenimientos</p>
+      </sidebar-link>
+      
+      
       <sidebar-link to="/admin/maps">
         <i class="nc-icon nc-pin-3"></i>
         <p>Control general</p>

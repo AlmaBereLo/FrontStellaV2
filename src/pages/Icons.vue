@@ -30,12 +30,8 @@
 </template>
 
 <script>
-import Card from 'src/components/Cards/Card.vue';
-
 export default {
-  components: {
-    Card,
-  },
+  
   data() {
     return {
       routes: [
@@ -51,7 +47,8 @@ export default {
         { path: "/admin/discoduro", name: "Disco Duro", icon: "fa-solid fa-hdd" },
         { path: "/admin/ram", name: "Memoria RAM", icon: "fa-solid fa-memory" },
         { path: "/admin/antivirus", name: "Antivirus", icon: "fa-solid fa-shield-alt" },
-        { path: "/admin/office", name: "Office", icon: "fa-solid fa-file-alt" }
+        { path: "/admin/office", name: "Office", icon: "fa-solid fa-file-alt" },
+        { path: "/admin/administradores", name: "Administradores", icon: "fa-solid fa-user-alt" }
       ]
     };
   },
