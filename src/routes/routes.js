@@ -25,12 +25,19 @@ import DiscoDuro from '../pages/DiscoDuro.vue'
 import Ram from '../pages/Ram.vue'
 import Antivirus from '../pages/Antivirus.vue'
 import Office from '../pages/Office.vue'
+import Login from '../Login.vue';
+
 import Administradores from '../pages/Administradores.vue'
+
 const routes = [
   {
-    path: '/',
-    component: DashboardLayout,
-    redirect: '/admin/overview'
+    path: '/', // Ruta inicial
+    redirect: '/login', // Redirige al login
+  },
+  {
+    path: '/login', // Ruta para el login
+    name: 'Login',
+    component: Login,
   },
   {
     path: '/admin',

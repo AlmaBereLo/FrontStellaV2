@@ -1,137 +1,390 @@
 <template>
-  <div v-if="showForm" class="form-container">
-    <form @submit.prevent="guardarEquipo">
-      <div class="form-group">
-        <label for="id_categoria">Categoría</label>
-        <select v-model="formData.id_categoria" id="id_categoria" required>
-          <option v-for="categoria in categorias" :value="categoria.id" :key="categoria.id">
-            {{ categoria.nombre }}
-          </option>
-        </select>
-      </div>
+  <div class="container mt-4">
+    <h2 class="letra1">Gestión de Equipos</h2>
+    <div class="text-left mb-4">
+      <button class="btn btn-add btn-sm" @click="openForm">
+        <i class="fa-solid fa-square-plus" style="margin-right: 10px"></i>
+        Agregar Equipo
+      </button>
+    </div>
+    <div v-if="showForm" class="modal-overlay" @click.self="cancelForm">
+      <div class="card modal-content">
+        
+        <div class="card-header">
+          <h4 class="mb-4">
+            {{ editMode ? "Editar Equipo" : "Agregar Equipo" }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <form @submit.prevent="guardarEquipo">
+            <div class="row mt-2">
+              <!-- Categoría -->
+              <div class="col-md-4">
+                <div class="form-group"  >
+                  <label for="categoria" >Categoría</label>
+                  <select
+                    id="categoria"
+                    v-model="formData.id_catego"
+                    class="form-control"
+                    :disabled="soloLectura"
+                    required
+                  >
+                    <option value="" disabled>Selecciona categoría</option>
+                    <option
+                      v-for="(nombre, id) in categorias"
+                      :key="id"
+                      :value="id"
+                    >
+                      {{ nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
 
-      <div class="form-group">
-        <label for="id_marca">Marca</label>
-        <select v-model="formData.id_marca" id="id_marca" required>
-          <option v-for="marca in marcas" :value="marca.id" :key="marca.id">
-            {{ marca.nombre }}
-          </option>
-        </select>
-      </div>
+              <!-- Marca -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="marca">Marca</label>
+                  <select
+                    id="marca"
+                    v-model="formData.id_marca"
+                    class="form-control"
+                     :disabled="soloLectura"
+                    required
+                  >
+                    <option value="" disabled>Seleccione una marca</option>
+                    <option
+                      v-for="(nombre, id) in marcas"
+                      :key="id"
+                      :value="id"
+                    >
+                      {{ nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
 
-      <div class="form-group">
-        <label for="id_modelo">Modelo</label>
-        <select v-model="formData.id_modelo" id="id_modelo" required>
-          <option v-for="modelo in modelos" :value="modelo.id" :key="modelo.id">
-            {{ modelo.nombre }}
-          </option>
-        </select>
-      </div>
+              <!-- Modelo -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="modelo">Modelo</label>
+                  <select
+                    id="modelo"
+                    v-model="formData.id_modelo"
+                    class="form-control"
+                     :disabled="soloLectura"
+                    required
+                  >
+                    <option value="" disabled>Seleccione un modelo</option>
+                    <option
+                      v-for="(nombre, id) in modelos"
+                      :key="id"
+                      :value="id"
+                    >
+                      {{ nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-      <div class="form-group">
-        <label for="numero_serie">Número de Serie</label>
-        <input type="text" v-model="formData.numero_serie" id="numero_serie" required />
-      </div>
+            <!--Numero Serie-->
+            <div class="form-group">
+              <label for="numero_serie">Número de Serie</label>
+              <input
+                type="text"
+                id="numero_serie"
+                v-model="formData.numero_serie"
+                class="form-control"
+                placeholder="Número de serie del equipo"
+                 :disabled="soloLectura"
+                required
+              />
+            </div>
 
-      <div class="form-group">
-        <label for="id_so">Sistema Operativo</label>
-        <select v-model="formData.id_so" id="id_so" required>
-          <option v-for="so in sistemasOperativos" :value="so.id" :key="so.id">
-            {{ so.nombre }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="id_licso">Licencia Sistema Operativo</label>
-        <select v-model="formData.id_licso" id="id_licso" required>
-          <option v-for="licso in licSistemaO" :value="licso.id" :key="licso.id">
-            {{ licso.nombre }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="id_cpu">Procesador</label>
-        <select v-model="formData.id_cpu" id="id_cpu" required>
-          <option v-for=" cpu in procesador" :value="cpu.id" :key="cpu.id">
-            {{ cpu.nombre }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="id_dd">Disco Duro</label>
-        <select v-model="formData.id_dd" id="id_dd" required>
-          <option v-for=" disco in discoDuro" :value="disco.id" :key="disco.id">
-            {{ disco.nombre }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="id_tipo_dd">Tipo de Disco</label>
-        <select v-model="formData.id_tipo_dd" id="id_tipo_dd" required>
-          <option value="HDD">HDD</option>
-          <option value="SSD">SSD</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="id_ram">Memoria RAM</label>
-        <select v-model="formData.id_ram" id="id_ram" required>
-          <option v-for=" ram in memoriaRam" :value="ram.id" :key="ram.id">
-            {{ ram.nombre }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="id_ram">RAM</label>
-        <input type="text" v-model="formData.id_ram" id="id_ram" required />
-      </div>
+            <div class="row mt-2">
+              <!--SO-->
+              <div class="col-md-4">
+                <label for="so">Sistema Operativo</label>
+                <select
+                  id="so"
+                  v-model="formData.id_so"
+                  class="form-control"
+                   :disabled="soloLectura"
+                  required
+                >
+                  <option value="" disabled>Seleccione un Sistema Op</option>
+                  <option v-for="(nombre, id) in sos" :key="id" :value="id">
+                    {{ nombre }}
+                  </option>
+                </select>
+              </div>
+              <!--Lic SO-->
+              <div class="col-md-4">
+                <label for="licso">Licencia Sistema Op</label>
+                <select
+                  id="licso"
+                  v-model="formData.id_licso"
+                   :disabled="soloLectura"
+                  class="form-control"
+                >
+                  <option value="" disabled>Seleccione una licencia</option>
+                  <option v-for="(nombre, id) in licsos" :key="id" :value="id">
+                    {{ nombre }}
+                  </option>
+                </select>
+              </div>
+              <!--Procesadores-->
+              <div class="col-md-4">
+                <label for="procesadore">Procesador</label>
+                <select
+                  id="procesadore"
+                  v-model="formData.id_cpu"
+                  class="form-control"
+                   :disabled="soloLectura"
+                  required
+                >
+                  <option value="" disabled>Seleccione un Procesador</option>
+                  <option
+                    v-for="(nombre, id) in procesadores"
+                    :key="id"
+                    :value="id"
+                  >
+                    {{ nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
 
-      <div class="form-group">
-        <label for="id_antivirus">Antivirus</label>
-        <input type="text" v-model="formData.id_antivirus" id="id_antivirus" required />
-      </div>
+            <div class="row mt-2">
+              <!--Disco duro-->
+              <div class="col-md-4">
+                <label for="discoduro">Disco Duro</label>
+                <select
+                  id="discoduro"
+                  v-model="formData.id_dd"
+                  class="form-control"
+                   :disabled="soloLectura"
+                  required
+                >
+                  <option value="" disabled>Seleccione un Disco Duro</option>
+                  <option
+                    v-for="(nombre, id) in discosduros"
+                    :key="id"
+                    :value="id"
+                  >
+                    {{ nombre }}
+                  </option>
+                </select>
+              </div>
+              <!-- Tipo DD-->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="marca">Tipo Disco Duro</label>
+                  <select
+                    id="marca"
+                    v-model="formData.id_tipodd"
+                    class="form-control"
+                     :disabled="soloLectura"
+                    required
+                  >
+                    <option value="" disabled>Seleccione tipo</option>
+                    <option
+                      v-for="(nombre, id) in tipodiscosduros"
+                      :key="id"
+                      :value="id"
+                    >
+                      {{ nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- Ram -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="marca">RAM</label>
+                  <select
+                    id="marca"
+                    v-model="formData.id_ram"
+                    class="form-control"
+                     :disabled="soloLectura"
+                    required
+                  >
+                    <option value="" disabled>Seleccione una Ram</option>
+                    <option v-for="(nombre, id) in rams" :key="id" :value="id">
+                      {{ nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-      <div class="form-group">
-        <label for="id_office">Office</label>
-        <input type="text" v-model="formData.id_office" id="id_office" required />
-      </div>
+            <div class="row mt-2">
+              <!-- Antivirus -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="antivirus">Antivirus</label>
+                  <select
+                    id="antivirus"
+                    v-model="formData.id_antivirus"
+                    class="form-control"
+                     :disabled="soloLectura"
+                    required
+                  >
+                    <option value="" disabled>Seleccione ua Antivirus</option>
+                    <option
+                      v-for="(nombre, id) in antivirus"
+                      :key="id"
+                      :value="id"
+                    >
+                      {{ nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- office -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="office">Office</label>
+                  <select
+                    id="office"
+                    v-model="formData.id_office"
+                    class="form-control"
+                     :disabled="soloLectura"
+                    required
+                  >
+                    <option value="" disabled>Seleccione un Office</option>
+                    <option
+                      v-for="(nombre, id) in offices"
+                      :key="id"
+                      :value="id"
+                    >
+                      {{ nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- Lic Office -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="licoffice">Lic Office</label>
+                  <select
+                    id="licoffice"
+                    v-model="formData.id_licoffice"
+                    class="form-control"
+                     :disabled="soloLectura"
+                    required
+                  >
+                    <option value="" disabled>Seleccione una Licencia</option>
+                    <option
+                      v-for="(nombre, id) in licoffices"
+                      :key="id"
+                      :value="id"
+                    >
+                      {{ nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-      <div class="form-group">
-        <label for="id_licoffice">Licencia de Office</label>
-        <input type="text" v-model="formData.id_licoffice" id="id_licoffice" required />
-      </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-success mr-2" >
+                <i class="fa-solid fa-check"></i> Guardar
+              </button>
 
-      <div class="form-group">
-        <label for="fecha_compra">Fecha de Compra</label>
-        <input type="date" v-model="formData.fecha_compra" id="fecha_compra" required />
+              <button
+                type="button"
+                class="btn btn-secondary"
+                style="color: brown; border-color: brown"
+                @click="cancelForm"
+              >
+                <i class="fa-solid fa-times"></i> Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+    </div>
+    <!--Tabla Principal de mostrar datos de API-->
+    <div class="table-responsive">
+      <table class="table table-striped table-hover text-center">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col" style="width: 5%">#</th>
+            <th scope="col" style="width: 20%">Categoría</th>
+            <th scope="col" style="width: 20%">Marca</th>
+            <th scope="col" style="width: 20%">Modelo</th>
+            <th scope="col" style="width: 20%">Número de Serie</th>
 
-      <div class="form-group">
-        <label for="costo">Costo</label>
-        <input type="number" v-model="formData.costo" id="costo" required />
-      </div>
+            <th scope="col" style="width: 17%">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="equipo in equipos" :key="equipo.id_equipo">
+            <td>{{ equipo.id_equipo }}</td>
+            <td>{{ getCategoriaNombre(equipo.id_catego) }}</td>
+            <td>{{ getMarcaNombre(equipo.id_marca) }}</td>
+            <td>{{ getModeloNombre(equipo.id_modelo) }}</td>
+            <td>{{ equipo.numero_serie }}</td>
 
-      <button type="submit">{{ editMode ? 'Actualizar Equipo' : 'Agregar Equipo' }}</button>
-      <button type="button" @click="cancelForm">Cancelar</button>
-    </form>
+            <td class="td-actions">
+              <button
+                class="btn btn-warning btn-sm"
+                style="margin-right: 10px"
+                @click="editEquipo(equipo)"
+                
+              >
+                <i class="fa-solid fa-pen-to-square"></i> Editar
+              </button>
+              <button
+                class="btn btn-warning btn-sm"
+                style="margin-right: 10px"
+                @click="mostrarEquipo(equipo)"
+              >
+                <i class="fa-solid fa-pen-to-square"></i> Mostrar
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                @click="eliminarEquipo(equipo.id_equipo)"
+              >
+                <i class="fa-solid fa-trash"></i> Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
+
+const apiUrl = "https://d854-189-164-39-38.ngrok-free.app/api";
 
 export default {
   data() {
     return {
-      showForm: false,
-      editMode: false,
       equipos: [],
       categorias: [],
       marcas: [],
       modelos: [],
-      sistemasOperativos: [],
+      sos: [],
+      licsos: [],
+      procesadores: [],
+      discosduros: [],
+      tipodiscosduros: [],
+      rams: [],
+      antivirus: [],
+      offices: [],
+      licoffices: [],
+
+      showForm: false,
+      editMode: false,
       formData: {
         id_equipo: null,
-        id_categoria: "",
+        id_catego: "",
         id_marca: "",
         id_modelo: "",
         numero_serie: "",
@@ -139,92 +392,398 @@ export default {
         id_licso: "",
         id_cpu: "",
         id_dd: "",
-        id_tipo_dd: "",
+        id_tipodd: "",
         id_ram: "",
         id_antivirus: "",
         id_office: "",
         id_licoffice: "",
-        fecha_compra: "",
-        costo: "",
       },
+      soloLectura: false,
+      botonMostrar: true,
     };
   },
   mounted() {
+    this.fetchEquipos();
     this.fetchCategorias();
     this.fetchMarcas();
     this.fetchModelos();
-    this.fetchSistemasOperativos();
+    this.fetchSO();
+    this.fetchLicSO();
+    this.fetchProcesadores();
+    this.fetchDiscosDuros();
+    this.fetchTipoDiscosDuros();
+    this.fetchRam();
+    this.fetchAntivirus();
+    this.fetchOffice();
+    this.fetchLicOffice();
   },
   methods: {
+    async fetchEquipos() {
+      try {
+        const response = await axios.get(`${apiUrl}/modulocomputadoraequipo`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.equipos = response.data.data;
+        }
+      } catch (error) {
+        console.error("Error al obtener los equipos:", error);
+      }
+    },
+    //========= Categorias
     async fetchCategorias() {
       try {
-        const response = await axios.get('/api/categorias');
-        this.categorias = response.data;
+        const response = await axios.get(`${apiUrl}/categoria`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.categorias = response.data.data.reduce((acc, categoria) => {
+            acc[categoria.id_catego] = categoria.nombre_catego;
+            return acc;
+          }, {});
+        }
       } catch (error) {
         console.error("Error al obtener las categorías:", error);
       }
     },
+    getCategoriaNombre(id_catego) {
+      return this.categorias[id_catego] || "Desconocido";
+    },
+
+    //========= Marcas
     async fetchMarcas() {
       try {
-        const response = await axios.get('/api/marcas');
-        this.marcas = response.data;
+        const response = await axios.get(`${apiUrl}/marca`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.marcas = response.data.data.reduce((acc, marca) => {
+            acc[marca.id_marca] = marca.nombre_marca;
+            return acc;
+          }, {});
+        }
       } catch (error) {
-        console.error("Error al obtener las marcas:", error);
+        console.error("Error al obtener las categorías:", error);
       }
     },
+    getMarcaNombre(id_marca) {
+      return this.marcas[id_marca] || "Desconocido";
+    },
+    //========= Modelos
     async fetchModelos() {
       try {
-        const response = await axios.get('/api/modelos');
-        this.modelos = response.data;
+        const response = await axios.get(`${apiUrl}/modelo`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.modelos = response.data.data.reduce((acc, modelo) => {
+            acc[modelo.id_modelo] = modelo.nombre_modelo;
+            return acc;
+          }, {});
+        }
       } catch (error) {
-        console.error("Error al obtener los modelos:", error);
+        console.error("Error al obtener las categorías:", error);
       }
     },
-    async fetchSistemasOperativos() {
+    getModeloNombre(id_modelo) {
+      return this.modelos[id_modelo] || "Desconocido";
+    },
+    //========= Sistema Operativo
+    async fetchSO() {
       try {
-        const response = await axios.get('/api/sistemas-operativos');
-        this.sistemasOperativos = response.data;
+        const response = await axios.get(`${apiUrl}/so`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.sos = response.data.data.reduce((acc, so) => {
+            acc[so.id_so] = so.nombre_so;
+            return acc;
+          }, {});
+        }
       } catch (error) {
-        console.error("Error al obtener los sistemas operativos:", error);
+        console.error("Error al obtener las categorías:", error);
       }
+    },
+    getSONombre(id_so) {
+      return this.sos[id_so] || "Desconocido";
+    },
+    //========= licencia SO
+    async fetchLicSO() {
+      try {
+        const response = await axios.get(`${apiUrl}/licso`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.licsos = response.data.data.reduce((acc, licso) => {
+            acc[licso.id_licso] = licso.nombre_licso;
+            return acc;
+          }, {});
+        }
+      } catch (error) {
+        console.error("Error al obtener la Licencia SO:", error);
+      }
+    },
+    getLicSONombre(id_licso) {
+      return this.licsos[id_licso] || "Desconocido";
+    },
+    //========= Procesadores
+    async fetchProcesadores() {
+      try {
+        const response = await axios.get(`${apiUrl}/procesador`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.procesadores = response.data.data.reduce((acc, procesador) => {
+            acc[procesador.id_cpu] = procesador.nombre_cpu;
+            return acc;
+          }, {});
+        }
+      } catch (error) {
+        console.error("Error al obtener las categorías:", error);
+      }
+    },
+    getProcesadoresNombre(id_cpu) {
+      return this.procesadores[id_cpu] || "Desconocido";
+    },
+    //========= DiscoDuro
+    async fetchDiscosDuros() {
+      try {
+        const response = await axios.get(`${apiUrl}/discoduro`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.discosduros = response.data.data.reduce((acc, discoduro) => {
+            acc[discoduro.id_dd] = discoduro.nombre_dd;
+            return acc;
+          }, {});
+        }
+      } catch (error) {
+        console.error("Error al obtener las categorías:", error);
+      }
+    },
+    getDiscosDurosNombre(id_dd) {
+      return this.discosduros[id_dd] || "Desconocido";
+    },
+    //========= Tipo DD marca
+    async fetchTipoDiscosDuros() {
+      try {
+        const response = await axios.get(`${apiUrl}/tipodiscoduro`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.tipodiscosduros = response.data.data.reduce(
+            (acc, tipodiscoduro) => {
+              acc[tipodiscoduro.id_tipodd] = tipodiscoduro.nombre_tipodd;
+              return acc;
+            },
+            {}
+          );
+        }
+      } catch (error) {
+        console.error("Error al obtener las categorías:", error);
+      }
+    },
+    getTipoDiscosDurosNombre(id_tipodd) {
+      return this.tipodiscosduros[id_tipodd] || "Desconocido";
+    },
+    //========= RAM
+    async fetchRam() {
+      try {
+        const response = await axios.get(`${apiUrl}/ram`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.rams = response.data.data.reduce((acc, ram) => {
+            acc[ram.id_ram] = ram.nombre_ram;
+            return acc;
+          }, {});
+        }
+      } catch (error) {
+        console.error("Error al obtener las categorías:", error);
+      }
+    },
+    getRamNombre(id_ram) {
+      return this.rams[id_ram] || "Desconocido";
+    },
+    //========= Antivirus
+    async fetchAntivirus() {
+      try {
+        const response = await axios.get(`${apiUrl}/antivirus`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.antivirus = response.data.data.reduce((acc, antivirus) => {
+            acc[antivirus.id_antivirus] = antivirus.nombre_antivirus;
+            return acc;
+          }, {});
+        }
+      } catch (error) {
+        console.error("Error al obtener las categorías:", error);
+      }
+    },
+    getAntivirusNombre(id_antivirus) {
+      return this.antivirus[id_antivirus] || "Desconocido";
+    },
+    //========= Office
+    async fetchOffice() {
+      try {
+        const response = await axios.get(`${apiUrl}/office`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.offices = response.data.data.reduce((acc, office) => {
+            acc[office.id_office] = office.nombre_office;
+            return acc;
+          }, {});
+        }
+      } catch (error) {
+        console.error("Error al obtener las categorías:", error);
+      }
+    },
+    getOfficeNombre(id_office) {
+      return this.offices[id_office] || "Desconocido";
+    },
+    //========= licoffice
+    async fetchLicOffice() {
+      try {
+        const response = await axios.get(`${apiUrl}/licoffice`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          this.licoffices = response.data.data.reduce((acc, licoffice) => {
+            acc[licoffice.id_licoffice] = licoffice.nombre_licoffice;
+            return acc;
+          }, {});
+        }
+      } catch (error) {
+        console.error("Error al obtener las categorías:", error);
+      }
+    },
+    getLicOfficeNombre(id_licoffice) {
+      return this.licoffices[id_licoffice] || "Desconocido";
     },
     async guardarEquipo() {
       try {
-        if (this.editMode) {
-          await axios.put(`/api/equipos/${this.formData.id_equipo}`, this.formData);
+        if (this.formData.id_equipo) {
+          // Actualizar agencia existente agencia
+          await axios.put(
+            `${apiUrl}/modulocomputadoraequipo/${this.formData.id_equipo}`,
+            this.formData
+          );
         } else {
-          await axios.post('/api/equipos', this.formData);
+          // Crear nueva agencia
+          await axios.post(`${apiUrl}/modulocomputadoraequipo`, this.formData); // Usar backticks aquí
         }
         this.fetchEquipos();
         this.cancelForm();
       } catch (error) {
-        console.error("Error al guardar el equipo:", error);
+        console.error("Error al guardar la equipo:", error);
       }
     },
+    // Eliminar una equipo
+    async eliminarEquipo(id) {
+      if (confirm("¿Estás seguro de eliminar esta Equipo?")) {
+        try {
+          await axios.delete(`${apiUrl}/modulocomputadoraequipo/${id}`);
+          this.fetchEquipos();
+        } catch (error) {
+          console.error("Error al eliminar la Equipo:", error);
+        }
+      }
+    },
+
+    //-------------------------------------------------------------
+    
+    editEquipo(equipo) {
+      this.editMode = true;
+      this.formData = { ...equipo };
+      this.showForm = true;
+    },
+    // Método para cancelar la edición
+    cancelForm() {
+      this.formData = {
+        id_antivirus: null,
+        id_catego: null,
+        id_cpu: null,
+        id_dd: null,
+        id_equipo: null,
+        id_licoffice: null,
+        id_licso: null,
+        id_marca: null,
+        id_modelo: null,
+        id_office: null,
+        id_ram: null,
+        id_so: null,
+        id_tipodd: null,
+        numero_serie: "",
+      };
+    },
+     // Mostrar el formulario para agregar o editar
+     openForm() {
+      this.showForm = true;
+      this.editMode = false;
+      this.resetForm();
+    },
+
+    // Cancelar el formulario
     cancelForm() {
       this.showForm = false;
       this.resetForm();
+      this.soloLectura = false;
     },
+    // Resetear los datos del formulario
     resetForm() {
       this.formData = {
-        id_equipo: null,
-        id_categoria: "",
-        id_marca: "",
-        id_modelo: "",
-        numero_serie: "",
-        id_so: "",
-        id_licso: "",
-        id_cpu: "",
-        id_dd: "",
-        id_tipo_dd: "",
-        id_ram: "",
-        id_antivirus: "",
-        id_office: "",
-        id_licoffice: "",
-        fecha_compra: "",
-        costo: "",
+        id_agencia: null,
+        nombre_age: "",
       };
     },
+    // Editar una agencia
+    editAgency(agency) {
+      this.formData = { ...agency }; // Asignar los datos de la agencia al formulario
+      this.showForm = true;
+      this.editMode = true;
+      this.soloLectura = false;
+    },
+    mostrarEquipo(equipo) {
+      this.formData = { ...equipo }; // Carga los datos en el formulario
+      this.soloLectura = true; // Activa el modo de solo lectura solo para "Mostrar"
+      this.showForm = true; // Muestra el formulario
+
+    },
+    botonMostrar(){
+      this.botonMostrar=false;
+    }
   },
 };
 </script>
+
+<style>
+/* Aquí puedes incluir el estilo del nuevo diseño según lo necesites */
+</style>
